@@ -1,0 +1,61 @@
+SIMSPEC V4.3 english version, by Ken Harrison , original version by  Christian Buil									Latest Revision:	Nov-16										
+																				
+Enter data in highlighted cells																				
+																				
+Telescope 					Spectrograph				Camera 							Slit Transmission 				Wavelength
+					Collimator				Camera (Select from list)	ATiK314L						0	0			=MROUND($G$32,250)
+Diameter (D) :		235	mm		Collimator-Focal length (f1) :	125	mm		pixel sizel (p) :	=VLOOKUP($K$6,$#REF!.$N$4:$R$35,3,FALSE())	microns					0.05	0.05			
+Focal Ratio, F/D (F#) :		4.5			Collimator-Required Focal ratio (Fc):	=C8			number of X pixels(Nx) :	=VLOOKUP($K$6,$#REF!.$N$4:$R$35,2,FALSE())						0.1	0.09			
+Focal length (f) :		=C7*C8	mm		Collimator-Minimum diameter (d1) :	=C7*G7/C9	mm		quantum efficiency (h) :	=VLOOKUP($U$6,$#REF!.$J$4:$L$22,3,FALSE())	%					0.15	0.14			
+Secondary Diameter		165	mm		Resolution of Collimation lens-FWHMo :	1	microns		Read noise (RON) :	=VLOOKUP($K$6,$#REF!.$N$4:$R$35,4,FALSE())	e-/pixel					0.2	0.19			
+Central obstruction (e) :		=C10/C7			Camera				Dark noise (Nd) :	=VLOOKUP($K$6,$#REF!.$N$4:$R$35,5,FALSE())	e-/s/pixel					0.25	0.23			
+Telescope throughput (To) :		0.95			Camera-Focal length (f2) :	80	mm		Binning, X axis (fl) :	1						0.3	0.28			
+					Camera-Distance to grating (T) :	150	mm		Binning, Y axis (fy) :	1						0.35	0.32			
+Seeing/ Atmosphere					Camera-Minimum lens diameter (d'2) :	=G7/C39/C8+G13*K7*K8/G12/1000	mm		Sampling Factor :	=C41/K7/K12						0.4	0.36			
+Seeing (f) :		3	"		Camera-Maximum focal ratio (Fo) :	=G12/G14			Exposure							0.45	0.4			
+Atmospheric transmission (Ta) :		0.8			Resolution of Camera lens-FWHMc :	1	microns		Subs, exposure time (ts) :	180	secs					0.5	0.44			
+Sky magnitude (mag/arc sec^2) :		16							number of subframes (n) :	10						0.6	0.52			
+	Star size at focus (FWHM):	=TAN(RADIANS(C15/60/60))*C9*1000	microns		Collimator/Camera -Total angle  (g) :	45	deg		Total exposure time (t):	=K17*K16	secs					0.7	0.59			
+					Slit width (w) :	30	microns		Spectrum size/ spread							0.8	0.65			
+NOTES:					Grating				Height of Spectrum (n) :	=C18*3/(K7*K13)	pixel					0.9	0.71			
+See www.astrosurf.org/buil/us/spe2/hresol1.htm					Grating-Lines/ mm (n) :	300										1	0.76			
+www.astrosurf.org/buil/us/stage/calcul/design_us.htm					Grating-Diffraction order (k) :	1			Target Star							1.1	0.8			
+=" (explanatory notes and worked example)"					Grating - Actual width	30	mm		Magnitude (m) :	12						1.2	0.84			
+					Grating - Actual height	30	mm		Effective temperature (Te) :	15000	K					1.4	0.9			
+SUMMARY					Grating- Minimum height (H) :	=G9	mm		Bolometric Correction (BC) :	-0.4						1.6	0.94			
+Resolving power R	=G28				Grating- Minimum width (W) :	=G9/COS(RADIANS(C37))	mm		SNR (Theoretical)							1.8	0.96			
+Spectral resolution	=G29	Angstroms			Dispersion (r) :	=ABS(10000*K7*K12*COS(RADIANS(C38))/G22/G21/G12)	Angstroms/ pixel		Signal/Noise (SNR/pixel) :	=K37/K39						2	0.98			
+Wavelength range	=G35	Angstroms			Resolving power (R) :	=IF(K14<2,ABS(1000*C39*G12/2/K7/K12*(TAN(RADIANS(C37))+SIN(RADIANS(C38))/COS(RADIANS(C37)))),ABS(1000*C39*G12/C41*(TAN(RADIANS(C37))+SIN(RADIANS(C38))/COS(RADIANS(C37)))))			Signal/Noise (SNR/Dl) :	=$K$40						10	1			
+Grating-Lines/ mm 	=G21				Spectral resolution (Dl) :	=G32/G28	Angstroms		Limiting Mag											
+Grating-Diffraction order	=G22				Dispersion (r) :	=(G27/(K7*K12))*1000	Angstroms/ mm		Limiting Mag.(Bowen-mod):	=$#REF!.$I$11										
+Slit width	=G19	microns			Wavelength Range															
+Target Mag.	=K23				Reference wavelength (l0) :	4000	Angstroms													
+Signal/Noise (SNR/pixel)	=K27				Lambda min. (l1) :	=G32-K8*G27/K12/2	Angstroms		SNR Calculations							Area	=(G25*G25*PI()/4)*(180-(DEGREES(ASIN((G24/2)/G25/2))))/360	=(G26*G26*PI()/4)*(180-(DEGREES(ASIN((G23/2)/G26/2))))/360		
+Signal/Noise (SNR/Dl)	=$K$28				Lambda max. (l2) :	=G32+K8*G27/K12/2	Angstroms		Number of  photons (E) :	=8.48E+034*POWER(10,-0.4*(K23+K25))/POWER(K24,4)/POWER(G32,4)/(EXP(144000000/K24/G32)-1)	photons/cm2/s/Angstroms					triangle	=0.5*(((G25-G24)/2)*2*SQRT((G25/2*G25/2)-((G25-G24)/2)*((G25-G24)/2)))	=0.5*(((G26-G23)/2)*2*SQRT((G26/2*G23/2)-((G26-G23)/2)*((G26-G23)/2)))		
+					Wavelength range/ image frame:	=G34-G33	Angstroms		Sky background(Ed) :	=8.48E+034*POWER(10,-0.4*(K25))/POWER(K24,4)/POWER(G32,4)/(EXP(144000000/K24/G32)-1)*POWER(10,-0.4*C17)	photons/cm2/s/Angstroms/ arc sec					eff	=1-((G25*G25*PI()/4)-2*(R33-R34))/(G25*G25*PI()/4)	=1-((G26*G26*PI()/4)-2*(S33-S34))/(G26*G26*PI()/4)		
+Other Results					Throughput efficiency				Final Efficiency (R) :	=((1-C11*C11)*C16*C12*G45*K9/100)*100	%									
+	Angle of incidence (a) :	=DEGREES(ASIN(0.0000001*G22*G21*G32/2/COS(RADIANS(G18/2))))+G18/2	deg		Transmission efficiency- guide system:	1			Useful signal (Nm) :	=0.25*PI()*(C7*C7)/100*K34*K36/100*G27*K18	e-/pixel									
+	Angle of diffraction (b) :	=C37-G18	deg		Transmission efficiency -transfer mirror:	0.98			Background noise (Ns) :	=3.34*10^8*K35*K36*G27*K20*K7/1000*G19/1000*K18*G7/G12/C8/C8	e-/pixel									
+	Anamorphic factor (r) :	=COS(RADIANS(C37))/COS(RADIANS(C38))			Transmission efficiency-Collimator lens (To) :	0.96			Noise(s) :	=SQRT(K37+(K20*K11*K18)+(K20/K13*K17*K10*K10))	e-/pixel									
+	diffraction limit grating, FWHMd :	=0.0001*G12*G32/(G7/C39/C8)	microns		Transmission efficiency-Camera lens (Tc) :	0.96			Signal/Noise by interval Dl :	=SQRT(G29/G27)*K27	e-/pixel									
+	Slit/ image width on CCD, FWHMt :	=IF((G19<C18),SQRT((POWER(C39*G12/G7,2)*(POWER(G19,2))+POWER(G10,2))+POWER(G16,2)+POWER(C40,2)+POWER(K12*K7,2)),SQRT((POWER(C39*G12/G7,2)*(POWER(C18,2))+POWER(G10,2))+POWER(G16,2)+POWER(C40,2)+POWER(K12*K7,2)))	microns		Transmission efficiency-Grating (Tg) :	=VLOOKUP($U$6,$#REF!.$P$41:$R$59,3,FALSE())/100			Noise from Signal :	=SQRT(K37+K38)	e-/pixel									
+					Entrance slit transmission(Tf):	=VLOOKUP(1/((C18)/G19),Q6:R28,2,TRUE())			Noise from Electronics :	=K10*SQRT(K17*K20)	e-/pixel									
+					% efficiency due to undersized grating -width	=IF((G23>G26),1,$S$35)														
+					% efficiency due to undersized grating -height	=IF((G25<G24),1,$S$35)			Note: Actual SNR obtained will be influenced by 											
+					Total Transmission of Spectrograph (Ts) :	=G37*G38*G39*G40*G41*G42*G43*G44			the guiding (total time the target star is held on the slit gap)											
+									A good estimate of actual SNR is 50% - 80% the theoretical.											
+					Note: thoughput does not take into account undersized															
+					collimator or imaging optics.															
+REVISION:																				
+V4.3 - Nov 2016	Instrument efficiency updated. Corrections to FWHMt formula																			
+V4.2 - March 2016	SNR by wavelength interval (resolution) added to summary. Actual grating sizes added.																			
+V4.1c - July 2013	Look-up table for Optometric grating efficiency. Formula for SNR amended.																			
+V4.1 -May 2013	Camera selection list added																			
+V4.0 - April 2012	New layout. Added Data Page. Updated comments																			
+V3.3a -Jan 2012	Collimator focal ratio set to match telescope. Camera focal ratio no longer an input.																			
+V3.3 -May 2011	Corrections to the equation for FWHMt ( incorrectly calculated for slit<star)																			
+V3.2c-Oct 2010	-Slit width now in micron																			
+V3.2b -July 2010	Transmission efficiencies added for guider and Littrow mirror																			
+V3.2a -April 2010	- Fixed slit width v's star size for resolution calculation. Based on CAOS data.																			
+	-SNRcalculations amended to follow CAOS formulae																			
+	-Bowen magnitude now based on spectrum width and units corrected.																			

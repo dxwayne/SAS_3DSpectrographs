@@ -1,0 +1,43 @@
+Limiting magnitude - Spectroscope									
+Bowen's Formula								Corrected and revised April 2012	
+									
+Original formula:									
+	m=12 + 2.5 log(( W* D1* Td* g* q* t* (dλ/dθ)/(f1* f2* H* α))							NB convert units to metres and radians	
+									
+	Where m is the limiting B magnitude to give a "usable spectrum"								
+Note: This formula is presented out of historical interest. The calculated magnitudes are only estimates. First promolgated by Bowen in the 1940's									
+									
+Input:							Output:		
+W	=$''.G19/1000000	Projected slit width at telescope focus				metre	mag lim	=14.1+1.2*LOG((B11*B12*B13*B14*B15*0.8*B16*B17)/(B18*B19*B20*B21),10)	
+D1	=($''.G7/$''.G8)/1000	Diameter of collimator lens				metre			
+Td	=$''.C7/1000	Clear aperture of telescope 				metre			
+g	=$''.$G$43	Optical efficiency					Usually 0.1 to 0.5		
+q	=$''.K9/100	Quantum efficiency of CCD							
+t	=$''.K18	exposure (secs)				sec			
+(dλ/dθ)	=$''.G14/1000/($''.G26*$''.G21)	dispersion of grating				m/rad	(dλ/dθ), also = d2/R		where d2 = exit beam reflected from the grating, R= Theoretical Resolving power
+f1	=$''.G7/1000	focal length of collimator				metre			
+f2	=$''.G12/1000	focal length of camera				metre			
+a	=$''.C15*5/100000	star size (Rad)				Rad	(5 -20uRad = 1-4")		
+H	=$''.K20*$''.K7/1000000	height of spectrum				metre	based on height of the spectrum ( height* pixel size)		
+									
+NB When slit is larger than star image, substitute Td= Td*Td,  ie magnitude proportional to Dt*Dt									
+									
+Comment:									
+1. Limiting magnitude should be based on a value close to SNR =10									
+2. The number of subs used for the exposure has an impact on the S/N ratio ie more subs gives lower S/N - this aspect is not included in Bowen's formulae.									
+modified formula used:									
+3. The Bowen formula doesn't handle well the various Bolometric corrections or the changes in stellar temperature.									
+									
+m=14.1 + 1.2 log(( W* D1* Td* g* q*0.8*t* (dλ/dθ)/(f1* f2* H* α))									
+									
+Example:									
+	1200 l/mm grating								
+	2" Seeing								
+	SNR=10	Buil	Modified 						
+	Total Exposure (secs)	Target Mag.	Bowen Limiting mag.						
+	51	7	7.03						
+	130	8	7.97						
+	335	9	8.92						
+	900	10	9.9						
+	2680	11	10.99						
+	9800	12	12.29						

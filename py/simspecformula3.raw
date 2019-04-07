@@ -1,0 +1,63 @@
+Atmospheric Transmission (Ta)				Bolometric Corrections (BC)					CCD Efficiency Curves (QE)				Typical CCD data- (Additional info welcome)						
+				Class	Main	Giants	Supergiants			Relative	Absolute		Camera	Width	Pixel	RON 	Dark		
+Zenith Angle	Transmission	(@5500A)			Sequence				Wavelength (A)	Efficiency			Name 	pixel	Micron	(e/pixel)	(e/s/pixel)	See:	http://www.licha.de/astro_article_ccd_sortable_compare.php
+0	0.83			O3	-4.30	-4.20	-4.00		3500	-	-		MX7c	755	8.6	12	0.1		http://www.astrosurf.com/buil/isis/noise/result.htm
+10	0.83			O5	-3.90	-3.80	-3.70		3750	0.3	=K5*$K$26		ATik16c	659	7.4	7	0.1	est	http://www.atik-cameras.com/products
+20	0.82			O7	-3.60	-3.40	-3.30		4000	0.49	=K6*$K$26		ATik16ic-S	782	8.3	7	0.1	est	http://www.astronomycameras.com/products/usb/
+30	0.81			B0	-3.00	-2.90	-2.70		4250	0.7	=K7*$K$26		DSI II pro	650	8.6	7	0.1	est	http://www.sxccd.com/lodestar-autoguider
+40	0.78			B1	-2.50	-2.00	-1.70		4500	0.82	=K8*$K$26		ATiK314L	1392	6.45	4	0.0005		http://www.sbig.com/products/cameras/
+50	0.75			B2	-2.00	-1.60	-1.35		4750	0.92	=K9*$K$26		Lodestar	752	4.75	10	0.1		
+60	0.69			B3	-1.80	-1.50	-1.15		5000	0.99	=K10*$K$26		ST7E	765	9	15	1		
+70	0.58			B5	-1.44	-1.30	-0.82		5250	0.99	=K11*$K$26		ST8E	1530	9	15	1		
+80	0.34			B7	-0.94	-1.07	-0.64		5500	0.99	=K12*$K$26		ST9E	512	20	13	8		
+85	0.12			A0	-0.15	-0.24	-0.30		5750	0.97	=K13*$K$26		ST10ME	2184	6.8	11	0.9		
+90	0			A5	-0.02	-0.02	0.00		6000	0.95	=K14*$K$26		SBIG 402ME	765	9	13.8	0.025		
+				F0	-0.01	0.01	0.14		6250	0.92	=K15*$K$26		STF 8300	3326	5.4	9.3	0.035		
+Zenith Angle = 90 - Star Altitude				F5	-0.03	-0.01	0.13		6500	0.88	=K16*$K$26		STXL11002	4000	9	11	0.5		
+				G0	-0.10	-0.13	-0.10		6750	0.79	=K17*$K$26		Other..						
+Surface Temperature				G5	-0.14	-0.34	-0.20		7000	0.69	=K18*$K$26		Webcam	640	5.6	0	0		
+Class	Temp (K)			K0	-0.24	-0.42	-0.38		7250	0.66	=K19*$K$26		DMK41	1280	4.65	0	0		
+O	>45000			K5	-0.66	-1.19	-1.00		7500	0.56	=K20*$K$26		DMK51	1600	4.4	0	0		
+O5	>40000			M0	-1.21	-1.28	-1.30		7750	0.46	=K21*$K$26		QHY5	1280	5.2	7	0.1	est	
+B0	30000			M2	-1.75	-1.52	-1.50		8000	0.4	=K22*$K$26		350D	3468	6.4	0	0		
+B5	15000			M4	-2.28		-2.50						450D	4272	5.2	0	0		
+A0	10000			M5	-2.59		-3.30		 (Based on ICX285AL)				1000D	3888	5.7	0	0		
+A5	8000			M8	-4.00				 (ATiK314L/DSI III/ SXV-H9)				MLx285	1435	6.45	4.5	0.002		
+F0	7000								Max QE approx=	60			ATiK460EX	2750	4.54	5.1	0.0013		
+F5	6200			See: "Stars and their Spectra" - Kaler, 2nd Ed. P19									OrionG3	752	8.6	9	0.01		
+G0	6000				also, 1st Ed. P263								3						
+G5	5500												4						
+K0	5100												5						
+K5	4000												6						
+M0	<3700												7						
+													8						
+See:													9						
+http://en.wikipedia.org/wiki/Stellar_classification													10						
+See: "Stars and their Spectra" - Kaler, 1st Ed. p80-81																			
+																			
+		Sky Background Brightness (SBO)	(Mag/arc  sec ^2)												Grating Efficiency Curves 				
+	Perfect dark sky = 22		See:	http://www.nightwise.org/magnitudes.htm												Absolute			
+	Rural conditions = 18			http://members.ziggo.nl/jhm.vangastel/Astronomy/visibility/PredictionTool.htm											Wavelength (A)	Efficiency			
+	Inner City Conditions = 16			SB0 = 22 - 5Log(10(1.7-LM/5)-1) as suggested by Jan van Gastel, based on the initial formula by Nils Olof 											3500		40		
+															3750		46.00		
+Quote:	Plotting those formula's against data from Peter van Leuteren,														4000		51.00		
+	 member of the the Dutch Meteor Society [based on over 500 observations], 														4250		60.00		
+	 it became apparent that the formula as suggested by Jan van Gastel matched the data best.														4500		68.00		
+															4750		69.00		
+															5000		70.00		
+															5250		70.00		
+															5500		68.00		
+															5750		64.00		
+															6000		62.00		
+															6250		62.00		
+															6500		60.00		
+															6750		58.00		
+															7000		56.00		
+															7250		50.00		
+															7500		50.00		
+															7750		47.00		
+															8000		44.00		
+																			
+															 (Based on Optometrics data)				
+															 Blazed for 5000A		1200 l/mm Littrow		
+															http://www.optometrics.com//App_Themes/optometrics/pdfs/gratings/1200g_mm_Ruled_500_nm_Blaze.pdf				
