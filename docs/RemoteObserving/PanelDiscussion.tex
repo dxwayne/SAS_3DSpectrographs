@@ -1,0 +1,745 @@
+\documentclass[letter,11pt,oneside]{article}
+
+%%% (occur "\\(\\\\[a-z]*section\\|appendix\\|input\\|\\<include\\>\\)")
+
+%%\documentclass[11pt,twocolumn]{article}
+%%\usepackage[inline]{asymptote}   %% Inline asymptote diagrams
+%%\usepackage{wglatex}             %% Use this one and kill others.
+\usepackage{color}               %% colored letters {\color{red}{{text}}
+\usepackage{fancyhdr}            %% headers/footers
+%%\usepackage{fancyvrb}            %% headers/footers
+\usepackage{datetime}            %% pick up tex date time 
+\usepackage{lastpage}            %% support page of ...lastpage
+\usepackage{times}               %% native times roman fonts
+\usepackage{textcomp}            %% trademark
+\usepackage{amssymb,amsmath}     %% greek alphabet
+\usepackage{parskip}             %% blank lines between paragraphs, no indent
+\usepackage{shortvrb}            %% short verb use for tables
+\usepackage{lscape}              %% landscape for tables.
+\usepackage{longtable}           %% permit tables to span pages wg-longtable
+\usepackage{url}                 %% Make URLs uniform and links in PDFs
+\usepackage{enumerate}           %% Allow letters/decorations for enumerations
+\usepackage{endnotes}            %% Enhance footnotes/endnotes
+\usepackage{listings}            %% Make URLs uniform and links in PDFs
+\pdfadjustspacing=1                %% force LaTeX-like character spacing
+\usepackage{geometry}            %% allow margins to be relaxed
+%%\usepackage{wrapfig}             %% permit wrapping figures.
+%%\usepackage{subfigure}              %% images side by side.
+\geometry{margin=1in}            %% Allow narrower margins etc.
+\usepackage[T1]{fontenc}         %% Better Verbatim Font.
+\renewcommand*\ttdefault{txtt}   %% 
+%%\usepackage{natbib}   %% bibitems
+
+%% include background image (wg-document-page-background) 
+
+\usepackage{graphicx}            %% Include pictures into a document
+%% (wg-texdoc-inserttikz)
+
+
+\def\documentisdraft{NOTDRAFT}
+
+%% (wg-texdoc-isdraft)
+%% (wg-texdoc-insert-fancy-headers)
+
+%%\usepackage[bookmarks]{hyperref} %% Make huperlinks within a PDF
+%%\usepackage{makeidx}             %% Make an index uncomment following line
+%%\makeindex                       %%.. yeah this one, too. index{key} in text
+%%
+
+
+
+\definecolor{verbcolor}{rgb}{0.6,0,0}
+\definecolor{darkgreen}{rgb}{0,0.4,0}
+\newcommand\debate[1]{\textcolor{darkgreen}{DEBATE: #1} \marginpar{\textcolor{red}{DEBATE} }}
+\newcommand{\ltodo}[2]{\marginpar{\textcolor{red}{ACTION: #1}\endnote{#2}}}
+\renewcommand{\thefigure}{\thesection-\arabic{figure}}
+
+
+%%(wg-texdoc-adjust-paper-width)%%Begin User Definitions: Hint: ~/.latex.defs and  latex.defs  
+%%End User Definitions:
+
+%% (wg-texdoc-insert-hypersetup)
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\begin{document}
+
+
+%% (wg-latex-pretty-title-page)
+%% (wg-texdoc-titleblock)
+
+\setcounter{section}{1}
+\pagenumbering{arabic}
+
+\ifx\documentisdraft\drafttest
+\linenumbers    %%%%%%%%%%%%% DRAFT
+\fi
+
+
+Hi,
+
+\vskip 1cm
+
+\begin{quote}{\centering {\Large
+
+I'm am inviting you\\
+ yes you\\
+ to be a member of the SAS panel discussion on \\
+``Remote Observatories for Small-Telescope Science''\\
+
+taking place at the SAS Symposium in Ontario\\
+ Friday afternoon 31 May. 2019 \\
+at 4:00 PM --- 'till'. \\
+
+}}
+\end{quote}
+\vskip 1cm
+
+We placed the discussion last on the agenda. While planning for 1 hour
+it can be allowed to run long.
+
+Below is a list of the basic topics off the top of my head, please
+add and delete as you see fit.
+
+I am approaching this Panel as a 'blank slate'. If you wish to
+participate please let me know ASAP -- then take some time to pull
+together and send me questions you feel are important to the
+discussion.  We plan to have a power-point available. We will
+take questions primarily from the audiance.
+
+If you have information that can fit into slides I will create an
+overall PPT presentation with hyper-links so we can call upon the
+slides as needed at various points during the discussion.
+
+The implicit goal of the panel is to encourage an ongoing discussion
+to promote best-practices of small-telescope remote operation and to
+avoid a one-prescription fits all answer.
+
+I will be the moderator. I will not be involved in the answers but
+will serve to keep the discussion moving along. 
+
+We want to include hilarious mistakes to avoid, disasters to celebrate,
+and to avoid one-prescription fits all answers.
+
+Experience is a good teacher. Somebody else's experience is a better
+teacher!
+
+Sincerely, Wayne Green
+
++1.303.818.1290 \\
+dxwayne@gmail.com
+
+\subsection{Broad Initial Topics}
+
+\vspace{-.15cm}
+\begin{enumerate}\addtolength{\itemsep}{-0.5\baselineskip}
+   \item   First off
+\vspace{-.15cm}
+\begin{enumerate}\addtolength{\itemsep}{-0.5\baselineskip}
+   \item   Experience Level
+   \item   Buy
+   \item   Build
+   \item   Interoperability
+   \item   INDI vs ASCOM
+   \item   Planetarium Software
+   \item   Planning
+\vspace{-.15cm}
+\begin{enumerate}\addtolength{\itemsep}{-0.5\baselineskip}
+   \item   Software
+   \item   Web resources
+   \item   catalogs
+   \item   database
+\end{enumerate}
+
+   \item   Raw Target List
+\end{enumerate}
+\end{enumerate}
+
+
+%%%%%%%%%%%
+\vspace{-.15cm}
+
+\begin{enumerate}\addtolength{\itemsep}{-0.5\baselineskip}
+\setcounter{enumi}{1}
+   \item   Health and Safety
+\vspace{-.15cm}
+\begin{enumerate}\addtolength{\itemsep}{-0.5\baselineskip}
+   \item   Battery burns the house down
+   \item   Lightening
+   \item   Its Dark!
+   \item   Its Cold!
+   \item   Its Dirty!
+   \item   Its Quiet
+\vspace{-.15cm}
+\begin{enumerate}\addtolength{\itemsep}{-0.5\baselineskip}
+   \item   Cameras/audio
+\end{enumerate}
+
+   \item   Thermal Expansion
+\vspace{-.15cm}
+\begin{enumerate}\addtolength{\itemsep}{-0.5\baselineskip}
+   \item   Cable Flexibility
+   \item   Heat/Cold loosening connections
+   \item   Electrical intermittants
+   \item   Grease thermal range
+\end{enumerate}
+
+   \item   Its Hot!
+   \item   Near-by human to fix/protect things
+\end{enumerate}
+
+%%%%%%%%%%%
+\end{enumerate}
+
+\vspace{-.15cm}
+\begin{enumerate}\addtolength{\itemsep}{-0.5\baselineskip}
+\setcounter{enumi}{2}
+   \item   Telescopes - align/clean/thermal expansion
+\vspace{-.15cm}
+\begin{enumerate}\addtolength{\itemsep}{-0.5\baselineskip}
+   \item   OTA
+   \item   Platescale
+\end{enumerate}
+\end{enumerate}
+
+
+\vspace{-.15cm}
+\begin{enumerate}\addtolength{\itemsep}{-0.5\baselineskip}
+\setcounter{enumi}{3}
+   \item   Mounts
+\vspace{-.15cm}
+\begin{enumerate}\addtolength{\itemsep}{-0.5\baselineskip}
+   \item   German, Fork-Equitorial, Nasmyth
+   \item   Alignment (field rotation)
+   \item   Limit Switches
+   \item   Home-position feedback
+   \item   Encoders
+   \item   Weight/Balance/Inertia
+\end{enumerate}
+\end{enumerate}
+
+
+\vspace{-.15cm}
+\begin{enumerate}\addtolength{\itemsep}{-0.5\baselineskip}
+\setcounter{enumi}{4}
+   \item   Targets
+\vspace{-.15cm}
+\begin{enumerate}\addtolength{\itemsep}{-0.5\baselineskip}
+   \item   Acqiisition
+   \item   Verify
+   \item   Guiding
+\end{enumerate}
+\end{enumerate}
+
+%%%%%%%%%%%
+\vspace{-.15cm}
+\begin{enumerate}\addtolength{\itemsep}{-0.5\baselineskip}
+\setcounter{enumi}{5}
+   \item  Software
+\vspace{-.15cm}
+\begin{enumerate}\addtolength{\itemsep}{-0.5\baselineskip}
+   \item   Communications
+\end{enumerate}
+
+\vspace{-.15cm}
+\begin{enumerate}\addtolength{\itemsep}{-0.5\baselineskip}
+   \item   WiFi
+   \item   EFI (Electronic Noise)
+   \item   Interface
+\begin{itemize}
+\addtolength{\itemsep}{-0.5\baselineskip}
+   \item   Teamviewer
+   \item   VNC
+\end{itemize}
+
+   \item   NTPD Time Sync
+   \item   File Export
+\begin{itemize}
+\addtolength{\itemsep}{-0.5\baselineskip}
+   \item   Preprocess with pipelines
+   \item   SSH/Putty
+   \item   SFTP
+   \item   Git
+\end{itemize}
+\end{enumerate}
+
+   \item   Windows/Linux/Mac
+\vspace{-.15cm}
+\begin{enumerate}\addtolength{\itemsep}{-0.5\baselineskip}
+   \item   Commercial
+   \item   Custom
+\end{enumerate}
+
+   \item   SoC
+\vspace{-.15cm}
+\begin{enumerate}\addtolength{\itemsep}{-0.5\baselineskip}
+   \item   Pi
+   \item   Arduino
+   \item   Distributed/Integrated
+\end{enumerate}
+
+   \item   Mounts
+\vspace{-.15cm}
+\begin{enumerate}\addtolength{\itemsep}{-0.5\baselineskip}
+   \item   Control/Recovery
+\end{enumerate}
+
+   \item   Controls:
+\vspace{-.15cm}
+\begin{enumerate}\addtolength{\itemsep}{-0.5\baselineskip}
+   \item   open-loop
+   \item   closed-loop
+\end{enumerate}
+
+   \item   Sensors:
+\vspace{-.15cm}
+\begin{enumerate}\addtolength{\itemsep}{-0.5\baselineskip}
+   \item   Usual:
+\end{enumerate}
+
+\begin{itemize}
+\addtolength{\itemsep}{-0.5\baselineskip}
+   \item   Zeros/darks/flats (not why but scheduling)
+   \item   Dome flats/twilight flats
+\end{itemize}
+
+   \item   Cameras and Filters
+\vspace{-.15cm}
+\begin{enumerate}\addtolength{\itemsep}{-0.5\baselineskip}
+   \item   Focus
+   \item   Control/Recovery
+\end{enumerate}
+
+   \item   Spectrographs
+\vspace{-.15cm}
+\begin{enumerate}\addtolength{\itemsep}{-0.5\baselineskip}
+   \item   Control/Recovery
+   \item   Comparison lamps
+\end{enumerate}
+
+   \item   Dome vs Roll-off
+   \item   Mechanical Topics
+\vspace{-.15cm}
+\begin{enumerate}\addtolength{\itemsep}{-0.5\baselineskip}
+   \item   Motors
+   \item   Grease
+\end{enumerate}
+
+   \item   Power Quantity/Quality
+\vspace{-.15cm}
+\begin{enumerate}\addtolength{\itemsep}{-0.5\baselineskip}
+   \item   UPS
+   \item   Standalone Batteries
+\end{enumerate}
+
+   \item   Weather
+\vspace{-.15cm}
+\begin{enumerate}\addtolength{\itemsep}{-0.5\baselineskip}
+   \item   Forecasts
+   \item   Monitoring
+   \item   Panic
+\end{enumerate}
+\end{enumerate}
+
+\section{John Hout}
+
+John Hout
+
+Addition Remote astronomy topics:
+
+\vspace{-.15cm}
+\begin{enumerate}\addtolength{\itemsep}{-0.5\baselineskip}
+   \item   Periodic Maintenance
+\vspace{-.15cm}
+\begin{enumerate}\addtolength{\itemsep}{-0.5\baselineskip}
+   \item     cleaning - optics, elecctronics, keyboards...
+   \item     lubrication
+   \item     Balance
+   \item     Desicants
+   \item     UPS's
+   \item     Spares Inventory
+   \item     Anticipate
+\vspace{-.15cm}
+\begin{enumerate}\addtolength{\itemsep}{-0.5\baselineskip}
+   \item        Failures
+   \item        Obsolesence
+   \item        Software Support Withdrawl
+\end{enumerate}
+\end{enumerate}
+
+
+   \item   Infrastructure
+\vspace{-.15cm}
+\begin{enumerate}\addtolength{\itemsep}{-0.5\baselineskip}
+   \item      Communication
+   \item      Phone
+   \item      Radio/Microwave
+   \item      Internet
+   \item         Ethernet
+   \item         Wifi
+   \item         Fiber
+   \item         Routers
+   \item         Security
+\vspace{-.15cm}
+\begin{enumerate}\addtolength{\itemsep}{-0.5\baselineskip}
+   \item            VPNs
+   \item            SSH
+   \item            Firewalls
+\end{enumerate}
+
+   \item         DHCP-DNS Servers
+   \item     Communications Failure/Recovery
+\end{enumerate}
+
+   \item   Power
+\vspace{-.15cm}
+\begin{enumerate}\addtolength{\itemsep}{-0.5\baselineskip}
+   \item      On grid/Off Grid
+   \item      Batteries
+   \item      UPS's
+   \item      Remote outlet Switching
+   \item      Power Failure Management/Recover
+   \item      Mounts
+\vspace{-.15cm}
+\begin{enumerate}\addtolength{\itemsep}{-0.5\baselineskip}
+   \item            Plate Solutions
+   \item            Focus, Focus, Focus..
+   \item            Mutliplexed Instruments on a single mount
+\end{enumerate}
+
+   \item   Control Paradigms
+   \item      Telepresense
+   \item      Scripting
+\vspace{-.15cm}
+\begin{enumerate}\addtolength{\itemsep}{-0.5\baselineskip}
+   \item         Closed/Extensible
+   \item         Scripting extension languages
+\end{enumerate}
+
+   \item      Scheduling
+   \item      Shared/Private Use
+   \item      Remote Facility Locale
+\vspace{-.15cm}
+\begin{enumerate}\addtolength{\itemsep}{-0.5\baselineskip}
+   \item         Nearby - minutes
+   \item         Distant - hours
+   \item         Very Distant - Days
+\end{enumerate}
+
+   \item      Distributed Control
+   \item   Construction
+\vspace{-.15cm}
+\begin{enumerate}\addtolength{\itemsep}{-0.5\baselineskip}
+   \item      Planning
+   \item      Document!!!
+   \item      Toolchain Preservation
+   \item      Archiving:
+\end{enumerate}
+
+\vspace{-.15cm}
+\begin{enumerate}\addtolength{\itemsep}{-0.5\baselineskip}
+   \item         Never trust a cloud!!!
+   \item         Tools
+   \item         Software
+   \item         Systems
+   \item         Rawdata
+   \item         Utilities
+   \item         Licenses/Keys
+   \item         Manuals
+   \item         Scripts
+\end{enumerate}
+\end{enumerate}
+\end{enumerate}
+
+
+
+
+%%\appendix
+%%\renewcommand \thesection{\Alph{section}}
+
+%% use a bibitem approach to the references publications etc.
+%% (wg-bibitem)
+
+%%\clearpage
+%%\addcontentsline{toc}{section}{References}
+%%\renewcommand*{\refname}{My Bibliography and References}
+%%\bibliographystyle{plain}	% bibliographystyle{apalike} and \usepackage{natbib}
+%%\bibliography{MasterBib}	% expects file "MasterBib.bib"
+
+
+%%\clearpage
+%%\addcontentsline{toc}{section}{Index}
+%%\printindex %% www.cs.usask.ca/resources/tutorials/latex/notes/toc-index.pdf
+
+%%\begin{thebibliography}{80}
+%%\usepackage{natbib}   %% bibitems
+%%\end{thebibliography}
+
+% /home/wayne/git/pre.SAS2019/PanelDiscussion.tex
+
+%% (wg-texdoc-endnotes)
+\end{document}
+
+
+
+\begingroup \fontsize{10pt}{10pt}
+\selectfont
+%%\begin{Verbatim} [commandchars=\\\{\}]
+\begin{verbatim} 
+Arne Henden     ahenden@gmail.com
+Tom Smith       tcsmith88354@gmail.com
+Jerry Foote     jfoote@infowest.com
+Bob Denny       rdenny@dc3.com
+Larry Dingle    larry.dingle47@gmail.com
+Stan Watson     Watsons@umich.edu
+Steve Bisque    stephen@bisque.com
+HOOT John	    observatory@ssccorp.com
+\end{verbatim}
+\endgroup
+%% \end{Verbatim}
+
+ahenden@gmail.com
+tcsmith88354@gmail.com
+jfoote@infowest.com
+rdenny@dc3.com
+larry.dingle47@gmail.com
+Watsons@umich.edu
+stephen@bisque.com
+observatory@ssccorp.com
+
+
+
+Arne Henden
+Tom Smith
+Jerry Foote
+Bob Denny
+Larry Dingle
+Stan Watsonx2
+Steve Bisque
+Hoot John	
+
+Tom Smith:
+Here are some things to maybe add:
+   - Telescope-optical train f/ratio
+   - Mount types, advantages and disadvantages
+   - What if my polar alignment isn't perfect, results in images
+   - WiFi or Ethernet based communications
+   - Flat & calibration lamps for good results
+   - Remote desktop, VNC, Anywhere PC, SSH, SFTP, Putty
+   - Limit switches on scopes and for observatory control and indication
+   - Two-way audio, maybe incorporated into existing webcams
+   - UPS
+   - Time sync methods
+   - Automatic processing pipelines
+   - Planning an observation, where to find information
+   - Sky catalogs and/or planetarium softwares
+   - Guiding, several methods
+   - Closed or open loop controls
+   - Is someone nearby to assist if things go wrong from remote operating positions
+   - Buy or build, experience level and time commitments
+
+
+
+- First off
+   - Experience Level
+   - Buy
+   - Build
+   - Interoperability
+   - INDI vs ASCOM
+   - Planetarium Software
+   - Planning
+      - Software
+      - Web resources
+      - catalogs
+      - database
+   - Raw Target List
+%%%%%%%%%%%
+- Health and Safety
+   - Battery burns the house down
+   - Lightening
+   - Its Dark!
+   - Its Cold!
+   - Its Quiet
+     - Cameras/audio
+   - Thermal Expansion
+      - Cable Flexibility
+      - Heat/Cold loosening connections
+      - Electrical intermittants
+      - Grease thermal range
+   - Its Hot!
+   - Near-by human to fix/protect things
+%%%%%%%%%%%
+- Telescopes
+  - OTA
+  - Platescale
+- Mounts
+  - German, Fork-Equitorial, Nasmyth
+  - Alignment (field rotation)
+  - Limit Switches
+  - Home-position feedback
+  - Encoders
+  - Weight/Balance/Inertia
+- Targets
+   - Acqiisition
+   - Verify
+   - Guiding
+%%%%%%%%%%%
+-Software
+   - Communications
+      - WiFi
+      - EFI (Electronic Noise)
+      - Interface
+        - Teamviewer
+        - VNC
+      - NTPD Time Sync
+      - File Export
+        - Preprocess with pipelines
+        - SSH/Putty
+        - SFTP
+        - Git
+
+   - Windows/Linux/Mac
+      - Commercial
+      - Custom
+   - SoC
+      - Pi
+      - Arduino
+      - Distributed/Integrated
+   - Mounts
+      - Control/Recovery
+   - Controls:
+      - open-loop
+      - closed-loop
+   - Sensors:
+      - Usual:
+         - Zeros/darks/flats (not why but scheduling)
+         - Dome flats/twilight flats
+   - Cameras and Filters
+      - Focus
+      - Control/Recovery
+   - Spectrographs
+      - Control/Recovery
+      - Comparison lamps
+   - Dome vs Roll-off
+   - Mechanical Topics
+      - Motors
+      - Grease
+   - Power Quantity/Quality
+      - UPS
+      - Standalone Batteries
+   - Weather
+      - Forecasts
+      - Monitoring
+      - Panic
+
+John Hout
+
+Addition Remote astronomy topics:
+
+\vspace{-.15cm}
+\begin{enumerate}\addtolength{\itemsep}{-0.5\baselineskip}
+   \item   Periodic Maintenance
+\vspace{-.15cm}
+\begin{enumerate}\addtolength{\itemsep}{-0.5\baselineskip}
+   \item     cleaning - optics, elecctronics, keyboards...
+   \item     lubrication
+   \item     Balance
+   \item     Desicants
+   \item     UPS's
+   \item     Spares Inventory
+   \item     Anticipate
+\vspace{-.15cm}
+\begin{enumerate}\addtolength{\itemsep}{-0.5\baselineskip}
+   \item        Failures
+   \item        Obsolesence
+   \item        Software Support Withdrawl
+\end{enumerate}
+\end{enumerate}
+
+
+   \item   Infrastructure
+\vspace{-.15cm}
+\begin{enumerate}\addtolength{\itemsep}{-0.5\baselineskip}
+   \item      Communication
+   \item      Phone
+   \item      Radio/Microwave
+   \item      Internet
+   \item         Ethernet
+   \item         Wifi
+   \item         Fiber
+   \item         Routers
+   \item         Security
+\vspace{-.15cm}
+\begin{enumerate}\addtolength{\itemsep}{-0.5\baselineskip}
+   \item            VPNs
+   \item            SSH
+   \item            Firewalls
+\end{enumerate}
+
+   \item         DHCP-DNS Servers
+   \item     Communications Failure/Recovery
+\end{enumerate}
+
+   \item   Power
+\vspace{-.15cm}
+\begin{enumerate}\addtolength{\itemsep}{-0.5\baselineskip}
+   \item      On grid/Off Grid
+   \item      Batteries
+   \item      UPS's
+   \item      Remote outlet Switching
+   \item      Power Failure Management/Recover
+   \item      Mounts
+\vspace{-.15cm}
+\begin{enumerate}\addtolength{\itemsep}{-0.5\baselineskip}
+   \item            Plate Solutions
+   \item            Focus, Focus, Focus..
+   \item            Mutliplexed Instruments on a single mount
+\end{enumerate}
+
+   \item   Control Paradigms
+   \item      Telepresense
+   \item      Scripting
+\vspace{-.15cm}
+\begin{enumerate}\addtolength{\itemsep}{-0.5\baselineskip}
+   \item         Closed/Extensible
+   \item         Scripting extension languages
+\end{enumerate}
+
+   \item      Scheduling
+   \item      Shared/Private Use
+   \item      Remote Facility Locale
+\vspace{-.15cm}
+\begin{enumerate}\addtolength{\itemsep}{-0.5\baselineskip}
+   \item         Nearby - minutes
+   \item         Distant - hours
+   \item         Very Distant - Days
+\end{enumerate}
+
+   \item      Distributed Control
+   \item   Construction
+\vspace{-.15cm}
+\begin{enumerate}\addtolength{\itemsep}{-0.5\baselineskip}
+   \item      Planning
+   \item      Document!!!
+   \item      Toolchain Preservation
+   \item      Archiving:
+\end{enumerate}
+
+\vspace{-.15cm}
+\begin{enumerate}\addtolength{\itemsep}{-0.5\baselineskip}
+   \item         Never trust a cloud!!!
+   \item         Tools
+   \item         Software
+   \item         Systems
+   \item         Rawdata
+   \item         Utilities
+   \item         Licenses/Keys
+   \item         Manuals
+   \item         Scripts
+\end{enumerate}
+\end{enumerate}
+\end{enumerate}
+
