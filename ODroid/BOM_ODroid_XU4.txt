@@ -1,0 +1,14 @@
+ODroid XU4 with Fan. You also want to get the emmc card with linux,
+a power supply, and the emmc reader/writer to backup etc.
+
+The rest is a pdf that I have put together.
+
+https://www.hardkernel.com/shop/odroid-xu4-special-price/
+https://www.hardkernel.com/shop/64gb-emmc-module-xu4-linux/
+https://www.hardkernel.com/shop/5v-4a-power-supply-us-plug-2/
+https://www.hardkernel.com/shop/usb3-0-emmc-module-writer/
+
+Probably better to print a box, not happy with the one I bought.
+
+
+
