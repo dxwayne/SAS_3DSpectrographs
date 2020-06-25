@@ -1,0 +1,678 @@
+\documentclass[letter,11pt,oneside]{article}
+
+%%% (occur "\\(\\\\[a-z]*section\\|appendix\\|input\\|\\<include\\>\\)")
+
+%%\documentclass[11pt,twocolumn]{article}
+%%\usepackage[inline]{asymptote}   %% Inline asymptote diagrams
+%%\usepackage{wglatex}             %% Use this one and kill others.
+\usepackage{color}               %% colored letters {\color{red}{{text}}
+\usepackage[listings,breakable]{tcolorbox}
+\usepackage{fancyhdr}            %% headers/footers
+%%\usepackage{fancyvrb}            %% headers/footers
+\usepackage{datetime}            %% pick up tex date time 
+\usepackage{lastpage}            %% support page of ...lastpage
+\usepackage{times}               %% native times roman fonts
+\usepackage{textcomp}            %% trademark
+\usepackage{amssymb,amsmath}     %% greek alphabet
+\usepackage{parskip}             %% blank lines between paragraphs, no indent
+\usepackage{shortvrb}            %% short verb use for tables
+\usepackage{lscape}              %% landscape for tables.
+\usepackage{longtable}           %% permit tables to span pages wg-longtable
+\usepackage{url}                 %% Make URLs uniform and links in PDFs
+\usepackage{enumerate}           %% Allow letters/decorations for enumerations
+\usepackage{endnotes}            %% Enhance footnotes/endnotes
+\usepackage{listings}            %% Make URLs uniform and links in PDFs
+\pdfadjustspacing=1                %% force LaTeX-like character spacing
+%%\usepackage{geometry}            %% allow margins to be relaxed
+%%\usepackage{wrapfig}             %% permit wrapping figures.
+%%\usepackage{subfigure}              %% images side by side.
+%%\geometry{margin=1in}            %% Allow narrower margins etc.
+\usepackage[T1]{fontenc}         %% Better Verbatim Font.
+\renewcommand*\ttdefault{txtt}   %% 
+\usepackage[bookmarks]{hyperref} %% Make huperlinks within a PDF
+%%\usepackage{natbib}   %% bibitems
+
+%% include background image (wg-document-page-background) 
+
+\usepackage{graphicx}            %% Include pictures into a document
+%% (wg-texdoc-inserttikz)
+
+
+\def\documentisdraft{NOTDRAFT}
+
+%% (wg-texdoc-isdraft)
+%% (wg-texdoc-insert-fancy-headers)
+
+%%\usepackage[bookmarks]{hyperref} %% Make huperlinks within a PDF
+%%\usepackage{makeidx}             %% Make an index uncomment following line
+%%\makeindex                       %%.. yeah this one, too. index{key} in text
+%%
+
+
+
+\definecolor{verbcolor}{rgb}{0.6,0,0}
+\definecolor{darkgreen}{rgb}{0,0.4,0}
+\newcommand\debate[1]{\textcolor{darkgreen}{DEBATE: #1} \marginpar{\textcolor{red}{DEBATE} }}
+\newcommand{\ltodo}[2]{\marginpar{\textcolor{red}{ACTION: #1}\endnote{#2}}}
+\renewcommand{\thefigure}{\thesection-\arabic{figure}}
+\newcommand{\menu}{\ensuremath{\;\rightarrow\;}}
+\newcommand{\dhl}[1]{{\color{verbcolor}{\texttt#1}}}
+\definecolor{wglightgreen}{rgb}{0.88, 0.58, 0.88}
+\newcommand{\wgtextbox}[1]{\noindent\fcolorbox{darkgreen}{wglightgreen}{%
+    \minipage[t]{\dimexpr0.80\linewidth-2\fboxsep-2\fboxrule\relax}
+        {#1}
+    \endminipage}}
+%%(wg-add-inline-images)  %% add inline images to the mix
+\tcbset{colback=yellow!10!white}  % tcolorbox background
+
+
+%%Begin User Definitions: Hint: ~/.latex.defs and  latex.defs  
+%%End User Definitions:
+%%(wg-texdoc-adjust-paper-width)
+%% (wg-texdoc-insert-hypersetup)
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% PAGE SIZE %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\pagestyle{fancy}
+\usepackage[paperheight=7.125in,paperwidth=9.5in,footskip=.05in,margin=.75in,heightrounded]{geometry}
+% (iv (setq tmp (/ (* 3.0 9.5) 4.0 )))   7.125
+\fancyhf{}
+\cfoot{{\tiny Page \thepage \hspace{1pt}}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\begin{document}
+
+
+%% (wg-latex-pretty-title-page)
+%% (wg-texdoc-titleblock)
+
+
+\title{ODroid KStars/Ekos/libindi Astronomy}
+\author{Wayne Green}
+\date{\today}
+\maketitle
+
+\begin{abstract}
+
+  The ODroid OU4 is an 8-core Arm processor, here tricked out with a 64G
+  eMMC card preloaded with Ubuntu 18.04. These instructions are how to
+  load the ODroid to support KStars/Ekos/libindi for astronomy. It is more
+  of a crib sheet. As an exercise the popular ds9 program compiled on the
+  ODroid. 
+
+\end{abstract}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% table of contents
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+ 
+\pagenumbering{roman}   % i,ii,etc
+%%\pagenumbering{gobble}   %ignore page numbers for a while
+\pdfbookmark[0]{Table of Contents}{MyTOC} % if usepackage{hyperref} in use.
+\tableofcontents
+%%\listoffigures
+%%\listoftables
+\newpage
+
+
+\setcounter{section}{1}
+\pagenumbering{arabic}
+
+\ifx\documentisdraft\drafttest
+\linenumbers    %%%%%%%%%%%%% DRAFT
+\fi
+
+\section*{Overview}
+
+First acquire the ODroid XU4, in my case the one with the fan. Get a
+decent $\mu$SSD drive -- a Verbatim Premium 10 32G or equivalent.  I
+used BalenEtcher on a Win10 to load the image.
+
+Boot the ODroid, expand the filesystem to the whole card and bring the
+image up to date.  Below are notes I took and rearranged to be in the
+order of how you should do things. For example I loaded VIM (the vi
+editor) early, locate\endnote{locate - Unix utility that builds a
+  'database' of every file and makes searching a machine fast. When
+  you add things, run \dhl{sudo updatedb} to manually rebuild the db.}
+late (because it is easy to load.)  The next logical step is to get
+the all the development installs done -- in this case I ran the INDI
+part first.
+
+
+I prefer to use ds9 as an image viewer and wanted it installed on the ODroid.
+I did a \dhl{sudo apt-get install saods9} -- and the packaged program
+crashs when loading a fits file iamge even though the program started up
+fine. I downloaded the source, but the stock OS image was missing
+quite a few libraries. One by one they were uncovered, and the
+\dhl{apt-get install} lines placed to be right after the boot.
+But in my actual order, I did Section \ref{sec:indipart} before
+the ds9 libraries (I didn't know I needed them at that point).
+
+I want the X11 functionalty, and I want Ekos to drop images where
+I want them. I installed \dhl{NFS}, and took notes on the steps
+to tie them to my main computer in Section \ref{sec:nfs}.
+
+
+\subsection{Things to do once}
+
+Using the \dhl{ssh} command, remote login to the odroid on your main
+machine. You can do these things at the ODroid command prompt as well
+if you like. If you are doing another odroid for the first time, then
+you may have to remove its \dhl{ssh-key} -- the message will
+tell you what to do:
+
+\hskip 1cm \dhl{   ssh-keygen -f "/home/wayne/.ssh/known\_hosts" -R "odroid.local"}
+
+Here is some code to cut/paste:
+
+\begin{tcolorbox} %[breakable,colback=yellow!5!black]
+\begingroup \fontsize{10pt}{10pt}
+\selectfont
+\begin{verbatim} 
+# If this is a different odroid might have to remove the
+# old hash from the .ssh/known_hosts file.
+#ssh-keygen -f "/home/wayne/.ssh/known_hosts" -R "odroid.local"
+ssh -l odroid odroid.local  # see remove old key above
+
+# fix up the ~/.bashrc to git rid of colors. (hard to see)
+echo "export PS1='(\j) \h \w [\!] '" >> ~/.bashrc
+echo "alias ls='ls -FC'"            >> ~/.bashrc
+echo "
+\end{verbatim}
+\endgroup
+\end{tcolorbox}
+
+\subsection{Initialize for KStars}
+
+Here we remote login via ssh into the odroid, and follow
+the commands below. It may require a reboot or two.
+This is for a first time load. A short cut for the
+huge KStars libraries and some default stuff you may
+want will be developed below. (\today)
+
+\begin{tcolorbox} %[breakable,colback=yellow!5!black]
+\begingroup \fontsize{10pt}{10pt}
+\selectfont
+\begin{verbatim} 
+#Setup
+ssh -l odroid odroid.local  # see remove old key above
+
+sudo apt-get update
+sudo apt-get upgrade              # N - keep the provider's /etc/apt-fast.conf
+sudo apt-get dist-upgrade
+sudo apt-get install -y vim       # because,,, vi!
+sudo apt install -y git           # because,,, git! (astrometry.net)
+
+# Load these packages now, get it over with for ds9.
+# Handy anyway.
+sudo apt-get install -y locate       # bacause,,, locate!
+sudo apt-get install -y libx11-dev   # needed for ds9
+sudo apt-get install -y zlib1g-dev   # needed for ds9
+sudo apt-get install -y libxml2-dev  # needed for ds9
+sudo apt-get install -y libxslt1-dev # needed for ds9
+sudo apt-get install -y autoconf     # needed for ds9
+
+# for astrometry.net
+sudo apt-get install -y swig
+sudo apt-get install -y  python3-dev python3-pip python3-virtualenv
+\end{verbatim}
+\endgroup
+\end{tcolorbox}
+
+
+\subsection{KStars/EkosINDI part}  \label{sec:indipart}
+
+Load the packages, and then using the KStars interface initialize the
+site location etc, and load the internal things like lots of Tycho
+stars. Add the Atik support libraries.
+
+\begin{tcolorbox} %[breakable,colback=yellow!5!black]
+\begingroup \fontsize{10pt}{10pt}
+\selectfont
+\begin{verbatim} 
+# Indi/KStars
+sudo apt-add-repository -y ppa:mutlaqja/ppa
+sudo apt-get update
+sudo apt-get install indi-full
+sudo apt-get install kstars-bleeding
+
+Atik Cameras:
+sudo add-apt-repository -y ppa:mutlaqja/ppa
+sudo apt-get update
+sudo apt-get install indi-atik
+sudo apt-get install libindi1     # moonlite NiteCrawler focuser
+
+\end{verbatim}
+\endgroup
+\end{tcolorbox}
+
+\subsection{Remote X Desktop}  \label{sec:xrdp}
+
+This part will be idle most of the time -- but still cycle-sucking.
+I did it anyway.
+
+
+\begin{tcolorbox} %[breakable,colback=yellow!5!black]
+\begingroup \fontsize{10pt}{10pt}
+\selectfont
+\begin{verbatim} 
+# https://linuxize.com/post/how-to-install-xrdp-on-ubuntu-18-04/
+apt install xfce4 xfce4-goodies xorg dbus-x11 x11-xserver-utils
+apt install xrdp 
+
+systemctl status xrdp
+adduser xrdp ssl-cert  
+systemctl restart xrdp
+ufw allow from 192.168.1.0/24 to any port 3389
+ufw allow 3389
+\end{verbatim}
+\endgroup
+\end{tcolorbox}
+
+\subsection{SAOImage/ds9}  \label{sec:ds9}
+
+Odroid:
+
+\begin{tcolorbox} %[breakable,colback=yellow!5!black]
+\begingroup \fontsize{10pt}{10pt}
+\selectfont
+\begin{verbatim} 
+cd /Downloads
+wget http://ds9.si.edu/download/source/ds9.8.1.tar.gz
+tar xzvf ds9.8.1.tar.gz  # -> makes SAO
+cd SAO
+make unix/install > log0 2>&1
+make >> log0 2>&1
+tail -f log0  # ties the window up watching the make
+\end{verbatim}
+\endgroup
+\end{tcolorbox}
+
+This went on for quite a while, each failure ment tracking
+down the missing library, adding that to the top of
+this file, and going again. It was painful, fortunately
+I knew ds9 when it was sane, and could decipher the
+twisted package names.
+
+Eventually:
+
+\begin{tcolorbox} %[breakable,colback=yellow!5!black]
+\begingroup \fontsize{10pt}{10pt}
+\selectfont
+\begin{verbatim} 
+ssh -X odroid@odroid # from titan
+ds9 theOdroidFits.fits # pops up an X display on Titan!
+\end{verbatim}
+\endgroup
+\end{tcolorbox}
+But, downloads bog down the ODroid, so we want INDI to
+drop the file via the network onto \dhl{titan}! So
+on to NFS.
+
+
+\subsection{ODroid in the Network}  \label{sec:networking}
+
+In this example, my main machine \dhl{titan} lives on
+my network at \dhl{192.168.0.216}. Currently the ODroid
+uses DHCP and is at \dhl{192.168.0.218} -- I maintain
+long DHCP leases with renewal on my network host.
+
+The ODroid is gig-Ether.
+
+I added \dhl{192.168.0.216} to the odroid \dhl{/etc/hosts} file.
+I added \dhl{192.168.0.218}  to titans \dhl{/etc/hosts} file.
+
+Titan has the nfs-server installed, has been for years.
+
+Titan has one-and-only one file that matters: the \dhl{/etc/exports}
+file. It needs one line added to allow the ODroid to come in
+as a user.
+
+The ODroid needs to have the \dhl{nfs-common} package installed,
+one line added to its /etc/fstab, and a little helper script
+added to \dhl{/etc/network/if-up.d/fstab} to mount the nfs
+connection during odroid-boot. (I suspect late rc2, before rc3).
+I don't care, I want it ready with run-level 5 hits.
+
+
+\subsection{NFS}  \label{sec:nfs}
+
+Third things first: This machine is behind at least 3 routers
+in my system, the last is the WAN gateway.
+
+Getting NFS was a bit painful to implement and I need to dig into
+some security issues. I should do the export on titan
+ONLY for ODroid's IP address for example. It's been 30 years
+since I had to do this for a living.
+
+Firewalls need to be explored and opened. My IPtables are a bit goofy
+on titan as it does Strange Things\texttrademark\; with Docker
+containers, and the rest of my network.
+
+When the camera takes an image, it will put the image into
+\dhl{ordoid:/mnt/titantoday} that winds up on
+\dhl{titan:/export/wayne/titantoday}. So, AS the camera
+is downloading -- the network is churning and the file's write
+finishes on \dhl{titan}. While the next hammering download
+is taking place, titan does not feel the impact so much.
+
+Note: This will have to change for high cadence work,
+but it is not too bad.
+
+NFS is a Unix/Unix network file sharing program. I trust it more than
+SMB -- but SMB has made progress. It is the one I choose, as my
+analysis routines are Unix based on a remote server anyway.
+
+I suspect a NFS/Tunneling might be slower.
+
+Or, I may implement a ``pull'' strategy from titan, to
+get the files over when I want them. This means titan will
+not see the camera download at all.
+
+\begin{tcolorbox}[breakable]
+\begingroup \fontsize{10pt}{10pt}
+\selectfont
+%%\begin{Verbatim} [commandchars=\\\{\}]
+\begin{verbatim} 
+# Now to get NFS working
+#On odroid
+# safer? sudo ufw allow from 192.168.0.216/32 to any port nfs
+sudo ufw allow from 192.168.0.0/24 to any port nfs
+sudo ufw status
+sudo apt install nfs-common
+---------------------------------
+# odroid /etc/fstab
+UUID=e139ce78-9841-40fe-8823-96a304a09859 / ext4 errors=remount-ro,noatime 0 1
+LABEL=boot /media/boot vfat defaults 0 1
+titan:/export/wayne/ /mnt/titantoday nfs rw,async,user,auto 0 0 
+
+mount -a
+# manual way... mount titan:/export/wayne/ /mnt/titantoday/
+
+# add a config script to mount fs
+cat >/etc/network/if-up.d/fstab
+#!/bin/sh
+mount -a
+^D
+chmod +x /etc/network/if-up.d/fstab
+---
+
+#On titan: edit /etc/exports
+/export       192.168.0.1/24(rw,fsid=0,insecure,no_subtree_check,async)
+/export/users 192.168.0.0/24(rw,nohide,insecure,no_subtree_check,async)
+/export/wayne 192.168.0.0/24(rw,async,no_subtree_check,anonuid=1000,anongid=1000)
+sudo exportfs -av
+
+# I suspect the line CIDR /32 = netmask of 255.255.255.255 or precise macine.
+# anonuid=1000,anongid=1000 is a bit concerning! It requires agreement in
+# user's ids between machines and 1000 is default linux install.
+/export/wayne 192.168.0.216/32(rw,async,no_subtree_check,anonuid=1000,anongid=1000)
+
+\end{verbatim}
+\endgroup
+%% \end{Verbatim}
+\end{tcolorbox}
+\section{Summary/Things to do}
+
+Three-D print a case that will hold on to something. Probably
+my Alpy-600 to start. That fan is a bit questionable, but another
+is hammering away at the back of the camera.
+
+I still need to write the task that drives ds9 when new images
+shows up. Did a lot of documentation on that as I was trying
+to get that to work from inside a Docker container. Futile
+I suspect, but I am sure learning networking on Docker's virtual
+net.
+
+
+\section{Operations}
+
+It is possible to store images both 'locally' on the ODroid,
+and remotely (see NFS above.)
+
+the \dhl{\~/Desktop/Today} is where all the software
+has been configured (in the past!) to use. At the
+end of the night, Rename this and copy to local
+machine as needed.
+
+With NFS, the copies are done one-by-one in realtime.
+
+
+\begin{tcolorbox} %[breakable,colback=yellow!5!black]
+\begingroup \fontsize{10pt}{10pt}
+\selectfont
+%%\begin{Verbatim} [commandchars=\\\{\}]
+\begin{verbatim} 
+ssh -l odroid@odroid.local
+...pw...
+
+cd Desktop
+
+ls -l Today          # see if exists,
+mv Today when.Today  # move it to the 'right' date
+mkdir Today          # make todays.
+\end{verbatim}
+\endgroup
+%% \end{Verbatim}
+\end{tcolorbox}
+
+\section{Use with The Sky/X (TSX)} \label{sec:skyx}
+
+The remote use requires the TCP/IP address of the
+mount controler. TSK \dhl{Tools->TCP Server}, the port is
+\dhl{3040} by default. On the same computer, set the
+TCP/IP address to localhost \dhl{127.0.0.1}.
+
+\url{https://www.indilib.org/devices/mounts/bisque-paramount.html}
+
+\index{TSX!port} \index{TSK!TCP/IP}
+
+
+
+\section{Astrometry.net Local}  \label{sec:astrommetry}
+
+The main documentation is at: \index{AstrometryNet!Documentation}
+
+\url{http://astrometry.net/doc/index.html}
+
+The \dhl{Astrometry.net} package can be obtained via git.
+\index{AstrometryNet!Build Instructions}
+
+\begin{tcolorbox} %[breakable,colback=yellow!5!black]
+\begingroup \fontsize{10pt}{10pt}
+\selectfont
+%%\begin{Verbatim} [commandchars=\\\{\}]
+\begin{verbatim} 
+mkdir -p ~/git/{clones,external}
+mkdir -p ~/clones
+cd ~/clones
+wget http://heasarc.gsfc.nasa.gov/FTP/software/fitsio/c/cfitsio-3.48.tar.gz
+tar xzvf cfitsio-3.48.tar.gz
+cd cfitsio-3.48
+./configure
+make > log1 2>&1 &
+tail -f log1
+view Makefile # make sure install dir is right. Ha! prefix=/usr needed
+sudo make prefix=/usr install
+
+#git clone ....the clone from github
+cd ~/git/external
+git clone https://github.com/dstndstn/astrometry.net.git
+cd astrometry.net
+# in the background, run make and watch for errors with tail -f
+make > log1 2>&1 &
+tail -f log1
+# ... take a minute! ...
+# making this documentation, cfitsio was missing, see above
+make > log2 2>&1 &
+tail -f log2
+# OK had to pause and install swig (above)
+make > log3 2>&1 &
+tail -f log3
+
+# OK had to pause and install python dev (above)
+make > log4 2>&1 &
+tail -f log4
+
+sudo make install INSTALL_DIR=/usr/local >install.log 2>&1
+less install.log
+
+# get some index files
+# first-off download them to a local place on your
+# network, then copy them here to the ODroid.
+# get wayne's handy scripts.
+\end{verbatim}
+\endgroup
+%% \end{Verbatim}
+\end{tcolorbox}
+
+\subsection{Index Files}
+
+The pagkage is installed at a given root location, here
+\dhl{/usr/local/share/astrometry}. The
+data files are controled by a file called \dhl{etc/astrometry.cfg}.
+
+\begin{tcolorbox} %[breakable,colback=yellow!5!black]
+\begingroup \fontsize{10pt}{10pt}
+\selectfont
+%%\begin{Verbatim} [commandchars=\\\{\}]
+\begin{verbatim} 
+add_path /usr/local/astrometry/data
+autoindex
+\end{verbatim}
+\endgroup
+%% \end{Verbatim}
+\end{tcolorbox}
+
+The two lines use all the files in the \dhl{/usr/local/astrometry/data}
+location. There are three strategies:
+
+- Keep all the files together in the \dhl{data} directory.
+
+
+
+Acquire the INDEX-42 files.
+
+\begin{table}[h!]
+%\phantomsection
+%\addcontentsline{toc}{section}{ TOC CAPTION}
+% \setlength{\belowcaptionskip}{6pt} % adjust space under caption abovecaptionskip
+% \renewcommand{\arraystretch}{1.3} % adjust line spacing
+%\small{
+%\begin{minipage}{\textwidth}     % for footnotes in table.
+%\caption[TOC]{Index File Scales}
+\centering
+\begin{tabular}{| l | l | r  r | r  r |}
+%\MakeShortVerb{\|}
+%\multicolumn{n}{fmt}{text for merged cols}
+\hline
+Scale &  File                 & \multicolumn{2}{| l |}{  Range}    &  \multicolumn{2}{| l |}{ Range }  \\
+      &                       & \multicolumn{2}{| l |}{  (arcmin)} & \multicolumn{2}{| l |}{ (degrees) } \\
+\hline
+00    &  index-4200-*.fits    &     2.0  &    2.8 &           &    \\    
+01    &  index-4201-*.fits    &     2.8  &    4.0 &           &    \\ 
+02    &  index-4202-*.fits    &     4.0  &    5.6 &           &    \\ 
+03    &  index-4203-*.fits    &     5.6  &    8.0 &           &    \\ 
+\hline
+04    &  index-4204-*.fits    &     8    &    11  &           &    \\ 
+05    &  index-4205-*.fits    &     11   &    16  &           &    \\ 
+06    &  index-4206-*.fits    &     16   &    22  &           &    \\ 
+07    &  index-4207-*.fits    &     22   &    30  &           &    \\ 
+08    &  index-4208.fits      &     30   &    42  &           &    \\ 
+09    &  index-4209.fits      &     42   &    60  &           &    \\ 
+10    &  index-4210.fits      &     60   &    85  &           &    \\ 
+11    &  index-4211.fits      &     85   &   120  &      1.42 &   2.00    \\ 
+\hline
+12    &  index-4212.fits      &     120  &   170  &      2.00 &   2.83    \\ 
+13    &  index-4213.fits      &     170  &   240  &      2.83 &   4.00    \\ 
+14    &  index-4214.fits      &     240  &   340  &      4.00 &   5.67    \\ 
+15    &  index-4215.fits      &     340  &   480  &      5.67 &   8.00    \\ 
+16    &  index-4216.fits      &     480  &   680  &      8.00 &  11.33    \\ 
+17    &  index-4217.fits      &     680  &  1000  &     11.33 &  16.67    \\ 
+\hline
+18    &  index-4218.fits      &     1000 &  1400  &     16.67 &  23.33    \\ 
+19    &  index-4219.fits      &     1400 &  2000  &     23.33 &  33.33    \\ 
+%% ones-based: \cline{a-b}
+\hline
+%%\DeleteShortVerb{|}
+\end{tabular}
+%%\end{minipage}    %% for footnotes  r@{.}l 
+\caption[TOC]{Index File Scales}
+\label{table:IndexFileScales}
+%%} % end small etc
+\end{table}
+
+
+Make GAIA index files.
+\url{https://github.com/LCOGT/gaia-astrometry-net}
+
+Get Pre-made GAIA files for scales 00 through 07. 194 files.
+\url{http://data.astrometry.net/5000/}
+
+
+
+\section{Summary} \label{sec:summary}
+
+The KStars planetarium packages leaves quite a bit to be desired,
+but allows one to add their own libraries, and control cameras etc.
+The ODroid/KStars/Ekos/INDI suite, with configuration tricks here
+allows the odroid to happily live on the telescope without
+keyboard/mouse/monitor. IT requires power and Ethernet from the
+outside -- and connections to the instrument: USB for the camera
+and perhaps USB for the filter wheel.
+
+
+
+
+%%\appendix
+%%\renewcommand \thesection{\Alph{section}}
+
+%% use a bibitem approach to the references publications etc.
+%% (wg-bibitem)
+
+%%\clearpage
+%%\addcontentsline{toc}{section}{References}
+%%\renewcommand*{\refname}{My Bibliography and References}
+%%\bibliographystyle{plain}	% bibliographystyle{apalike} and \usepackage{natbib}
+%%\bibliography{MasterBib}	% expects file "MasterBib.bib"
+
+
+%%\clearpage
+%%\addcontentsline{toc}{section}{Index}
+%%\printindex %% www.cs.usask.ca/resources/tutorials/latex/notes/toc-index.pdf
+
+%%\begin{thebibliography}{80}
+%%\usepackage{natbib}   %% bibitems
+%%\end{thebibliography}
+
+% /home/wayne/git/pre/pre.Odroid/doc/Odroid.tex
+
+%% (wg-texdoc-endnotes)
+\end{document}
+
+
+#on odroid
+# add titan to /etc/hosts
+echo "192.168.0.216 titan" >> /etc/hosts
+
+# add export info on titan/restart nfs
+/export/wayne 192.168.0.0/24(rw,async,no_wdelay,no_root_squash,insecure_locks,sec=sys,anonuid=1025,anongid=100)
+systemctl restart nfs-kernel-server
+
+
+#Add to tail of /etc/fstab
+titan:/export/wayne/Today /home/odroid/desktop/Today nfs rw,user,auto 0 0
+
+---
+https://linuxconfig.org/how-to-configure-a-nfs-file-server-on-ubuntu-18-04-bionic-beaver
+
+#titan /etc/exports
+/export       192.168.0.1/24(rw,fsid=0,insecure,no_subtree_check,async)
+/export/users 192.168.0.0/24(rw,nohide,insecure,no_subtree_check,async)
+#/export/wayne 192.168.0.0/24(rw,nohide,insecure,no_subtree_check,async)
+/export/wayne 192.168.0.0/24(rw,async,no_wdelay,no_root_squash,insecure_locks,sec=sys,anonuid=1025,anongid=100)
+
+
+Kevin AVX mount.
