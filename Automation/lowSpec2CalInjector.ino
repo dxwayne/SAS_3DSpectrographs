@@ -13,6 +13,7 @@
 // *      Added more info to the status command.    *
 // *      Created a listing of functions.           *
 // *    - 20200806 repaired the serial comms        *
+// *    - 20200807 added PWM to slit lamp control   *
 // **************************************************/
 
 ///**************************************************
@@ -25,8 +26,8 @@
 // *    runTo()                                     *
 // *    resetCurrentStep()                          *
 // *    doCommandEvaluation()                       *
-// *    getStep()
-// *    getStatus()                                 *
+// *    getStep()                                   *
+// *    getStatus() not used yet                    *
 // *    doAction()                                  *
 // *    serialEvent()                               *
 // *    showHelp()                                  *
@@ -47,7 +48,7 @@
 // *  5 = cal lamp relay OFF                        *
 // *  F = flat lamp relay ON                        *
 // *  6 = flat lamp relay OFF                       *
-// *  S = slit lamp LED ON                          *
+// *  S = slit lamp LED ON with PWM                 *
 // *  7 = slit lamp LED OFF                         *
 // *  R = change speed of motor                     *
 // *  T = test all three lamps                      *
@@ -98,6 +99,8 @@
 // *    the 0 or homed position)                    *
 // *  - If command is '0'(zero) then show status    *
 // *  - If command is '?' then display command list *
+// *  - Slit LED will be PWM controllable on Pins 3,* <- this is due to those pins sharing 
+// *      5, 6, 9, 10, and 11. 5&6 not advisable    *    timers with millis() and delay()
 // **************************************************/ 
 
 ///**************************************************
@@ -112,10 +115,10 @@ const int motorPinIN1         = 8;                          // IN-1 pins on UL20
 const int motorPinIN2         = 9;                          // IN-2 pins on UL2003 board
 const int motorPinIN3         = 10;                         // IN-3 pins on UL2003 board
 const int motorPinIN4         = 11;                         // IN-3 pins on UL2003 board
-const int maxSteps            = -16000; //16384;            // abs maximum steps from homed (0) to fully inserted
+const int maxSteps            = -15000; //16384;            // abs maximum steps from homed (0) to fully inserted
 
 int speedToRun                = 1000;                       // speed to run <= 2000 steps/sec
-int testDelay                 = 3000;                       // delay in seconds while doing a lamp test
+const int testDelay           = 3000;                       // delay in seconds while doing a lamp test
 bool boolLocalCommands        = true;                       // flag to display local verbose replies
 bool autoHome                 = false;                      // flag for autohome on start
 ///**************************************************
@@ -132,9 +135,11 @@ bool autoHome                 = false;                      // flag for autohome
 // *              DO NOT NODIFY THESE               *
 // **************************************************/
 int stepCount = 0;                                          // number of steps the motor has taken
-const float STEPS_PER_REV     = 32;                         // motor steps ignoring the gearing
-const float GEAR_RED          = 64;                         // approximate reduction of 64:1
-const float STEPS_PER_REV_OUT = STEPS_PER_REV * GEAR_RED;   // includes reduction
+//const float STEPS_PER_REV     = 32;                         // motor steps ignoring the gearing
+//const float GEAR_RED          = 64;                         // approximate reduction of 64:1
+//const float STEPS_PER_REV_OUT = STEPS_PER_REV * GEAR_RED;   // includes reduction
+const float STEPS_PER_REV_OUT = 32 * 64;   // includes reduction
+
 int hallSwitchState           = 0;                          // holds the current switch state
 int currentStep               = 0;                          // step counter, same as stepper.currentPosition()
 int deltaSteps                = 0;                          // steps to move if not all IN or all OUT
@@ -142,9 +147,13 @@ bool bolHomeFound             = 0;                          // used to prevent c
 String inputString            = "";                         // command string created from serial input
 bool stringComplete           = false;                      // whether the string is complete                                     
 String arrCommand[2];                                       // array holding command segments
-const String helpCommands = " A->toggle AutoHome, , L->toggel Local commands w/ECHO,\n I->full inward O->full outward, Mxxxx->Move To xxxx,\n Rxxxx->Change speed to xxxx,\n F->Flat lamp ON, 5->Flat lamp OFF, C->Cal lamp ON,\n 6->Cal lamp OFF, S->Slit LED ON, 7->Slit LED OFF,\n 0->Step Status, T->Test all lamps, ?->this help";
+//const String helpCommands = " A->toggle AutoHome, , L->toggel Local commands w/ECHO,\n I->full inward O->full outward, Mxxxx->Move To xxxx,\n Rxxxx->Change speed to xxxx,\n F->Flat lamp ON, 5->Flat lamp OFF, C->Cal lamp ON,\n 6->Cal lamp OFF, S->Slit LED ON, 7->Slit LED OFF,\n 0->Step Status, T->Test all lamps, ?->this help";
+const String helpCommands = " A=Toggle AutoHome, L=Toggel Local w/ECHO,\n I=Inward O=Outward, Mxxxx=Move To xxxx,\n Rxxxx=Speed to xxxx,\n F=Flat ON, 5=Flat OFF, C=Cal ON,\n 6=Cal OFF, Sxxx=Slit PWM, 7=Slit OFF,\n 0=Step, T=Test lamps, ?=Help";
+
+int SlitPWM                   = 0;                        // initally set to full off but adjustable
 // step pins are energized in this patterns for forward stepping 1-3-2-4
-Stepper stepper(STEPS_PER_REV,8,10,9,11);                   // order is to be blue-yellow-pink-orange
+//Stepper stepper(STEPS_PER_REV,8,10,9,11);                   // order is to be blue-yellow-pink-orange
+Stepper stepper(32,8,10,9,11);                   // order is to be blue-yellow-pink-orange
 
 int checkSwitchState(){
   // check the current state of the hall switch and return it as 0-not triggered or 1-triggered
@@ -195,12 +204,20 @@ void homeMotor(){
 }
 
 void toggleAutoHome(){
+  String autoWord = "False";
   if (autoHome == true){
     autoHome = false;
   }
   else{
     autoHome = true;
   }
+  if (autoHome == true){
+    autoWord = "True";
+  }
+  else{
+    autoWord = "False";
+  }
+  Serial.println("AutoHome ON: " + autoWord);
 }
 void driveIN(int targetStep){ // ex. dSteps = -200 then drive in 200 steps
   // Drive inward to targetStep not to exceed maxSteps
@@ -296,6 +313,14 @@ void doCommandEvaluation(){
       Serial.println("arrCommand[0]= " + arrCommand[0] + ", arrCommand[1]= " + arrCommand[1]);
     }
   }
+  else if ((inputString.startsWith("s")) || (inputString.startsWith("S"))){
+    // we have a PWM value to work with
+    arrCommand[0] = "S";
+    arrCommand[1] = inputString.substring(1).toInt();
+    if (boolLocalCommands == true){
+      Serial.println("arrCommand[0]= " + arrCommand[0] + ", arrCommand[1]= " + arrCommand[1]);
+    }
+  }
   else{
     // not an M or an R so just populate the arrCommand[0] with entire string
     arrCommand[0] = inputString;
@@ -313,50 +338,50 @@ int getStep(){
   return currentStep;
 }
 
-void getStatus(){             // currently not an active command
-  String where = "";
-  String theSwitch = "";
-  String thePosition = "";
-  String homeTriggered = "";
-  // show the current status information
-  if (boolLocalCommands == true){
-    where = "YES";
-  }
-  else{
-    where = "NO";
-  }
-  if (hallSwitchState = 1){
-    theSwitch = "Homed";
-  }
-  else{
-    theSwitch = "Not Homed";
-  }
-  if (currentStep == 0){
-    // at home
-    thePosition = "0, At Home";
-  }
-  else{
-    thePosition = String(currentStep);
-  }
-  if (digitalRead(hallSwitchPin) == 0){
-    // triggered
-    homeTriggered = "YES";
-  }
-  else{
-    homeTriggered = "NO";
-  }
-  if (boolLocalCommands ==true){
-    Serial.println("=============== INJECTOR STATUS =================");
-    Serial.println("   AutoHome:\t\t" + String(autoHome));
-    Serial.println("   Speed:\t\t" + String(speedToRun));
-    Serial.println("   Current step:\t" + thePosition);
-    Serial.println("   Maximum step:\t" + String(maxSteps));
-    Serial.println("   Local Commands:\t" + where);
-    Serial.println("   Hall Switch State:\t" + theSwitch);
-    Serial.println("   Hall Triggered Now:\t" + homeTriggered);
-    Serial.println("================= End of STATUS =================");
-  }
-}
+//void getStatus(){             // currently not an active command
+//  String where = "";
+//  String theSwitch = "";
+//  String thePosition = "";
+//  String homeTriggered = "";
+//  // show the current status information
+//  if (boolLocalCommands == true){
+//    where = "YES";
+//  }
+//  else{
+//    where = "NO";
+//  }
+//  if (hallSwitchState = 1){
+//    theSwitch = "Homed";
+//  }
+//  else{
+//    theSwitch = "Not Homed";
+//  }
+//  if (currentStep == 0){
+//    // at home
+//    thePosition = "0, At Home";
+//  }
+//  else{
+//    thePosition = String(currentStep);
+//  }
+//  if (digitalRead(hallSwitchPin) == 0){
+//    // triggered
+//    homeTriggered = "YES";
+//  }
+//  else{
+//    homeTriggered = "NO";
+//  }
+//  if (boolLocalCommands ==true){
+//    Serial.println("=============== INJECTOR STATUS =================");
+//    Serial.println("   AutoHome:\t\t" + String(autoHome));
+//    Serial.println("   Speed:\t\t" + String(speedToRun));
+//    Serial.println("   Current step:\t" + thePosition);
+//    Serial.println("   Maximum step:\t" + String(maxSteps));
+//    Serial.println("   Local Commands:\t" + where);
+//    Serial.println("   Hall Switch State:\t" + theSwitch);
+//    Serial.println("   Hall Triggered Now:\t" + homeTriggered);
+//    Serial.println("================= End of STATUS =================");
+//  }
+//}
 
 void doAction(){
   // decide what command to run
@@ -373,7 +398,7 @@ void doAction(){
   // *  5 = cal lamp relay OFF                        *
   // *  F = flat lamp relay ON                        *
   // *  6 = flat lamp relay OFF                       *
-  // *  S = slit lamp LED ON                          *
+  // *  S = slit lamp LED ON with PWM                 *
   // *  7 = slit lamp LED OFF                         *
   // *  R = change speed to RUN                       *
   // *  T = test all three lamps                      *
@@ -427,7 +452,7 @@ void doAction(){
     // move to the requested step
    int targetStep = arrCommand[1].toInt();
       runTo(targetStep);
-        Serial.println("Step = " + String(targetStep));    // ==> Reply through serial
+      Serial.println("Step = " + String(targetStep));    // ==> Reply through serial
       return;
     }
     // Zero the step counter
@@ -496,10 +521,21 @@ void doAction(){
     return;
   }
   // SLIT lamp ON
+//  else if ((arrCommand[0] == "S") || (arrCommand[0] == "s")){
+//    // turn on the slit LED set it HIGH
+//    digitalWrite(SlitLEDPin, HIGH);
+//    Serial.println("Slit LED ON");    // ==> Reply through serial
+//    return;
+//  }
   else if ((arrCommand[0] == "S") || (arrCommand[0] == "s")){
-    // turn on the slit LED set it HIGH
-    digitalWrite(SlitLEDPin, HIGH);
-    Serial.println("Slit LED ON");    // ==> Reply through serial
+    // turn on the slit LED set it to the PWM value in SlitPWM
+    // map the PWM between 0 - 255
+    // first turn the slit off
+    analogWrite(SlitLEDPin,0);
+    delay(0.5);
+    SlitPWM = arrCommand[1].toInt();  //map(SlitPWM,0,1023,0,255);
+    analogWrite(SlitLEDPin, SlitPWM);
+    Serial.println("Slit LED ON at " + String(SlitPWM));    // ==> Reply through serial
     return;
   }
   // SLIT lamp OFF
@@ -535,10 +571,10 @@ void doAction(){
 void showHelp(){
   if (boolLocalCommands ==true){
     // display the help commands
-    Serial.println("======================= COMMANDS =========================");
+    Serial.println("COMMANDS");
     Serial.println(helpCommands);
     Serial.println("(Local command mode ON by default, AutoHome OFF by default)");
-    Serial.println("===================== END OF COMMANDS ====================");
+    //Serial.println("END OF COMMANDS");
   }
 }
 
