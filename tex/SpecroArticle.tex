@@ -478,6 +478,23 @@ control over the exposure time and better photon statistics.
 
 % (iv (setq tmp (* -2.5 (log10 .90) )))   0.114
 
+\section{Mirror Makers Formula}
+
+There is a sign switch due to reflection washing around in this
+one.
+
+The lens makers formula's analog for mirrors \citep{hyperphysics-mirror}:
+
+
+\begin{align}
+\frac{1}{s_{1}} + \frac{1}{f} &= \frac{1}{s_{2}} 
+\end{align}
+
+where $f$ is the focal length of the mirror, $s_{1}$ is the distance
+to the 'target' and $s_{2}$ is where the image is formed. Remember it
+reverses direction along the optical axis.
+
+
 %%% ADDAPPENDIX
 
 
@@ -487,7 +504,7 @@ control over the exposure time and better photon statistics.
 %%\clearpage
 \addcontentsline{toc}{section}{References}
 \renewcommand*{\refname}{References}
-\bibliographystyle{plain}	% bibliographystyle{apalike} and \usepackage{natbib}
+\bibliographystyle{apalike}	% bibliographystyle{apalike} and \usepackage{natbib}
 \bibliography{SpecroArticle}{}	% expects file "MasterBib.bib"
 
 
