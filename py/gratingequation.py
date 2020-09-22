@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8; mode: xub -*-
+# -*- coding: utf-8 -*-
 # HEREHEREHERE
 
 #############################################################################
@@ -88,9 +88,13 @@ gratingequation.py   [options]
 
 options:
 
--p, --plot           make a Matplotlib plot
--r, --report         make a 'report' to stdout
--c, --csv <pathname> produce a CSV file to path/file name.
+-p, --plot           bool          make a Matplotlib plot
+-r, --report         bool          make a 'report' to stdout
+-c, --csv <pathname> bool          produce a CSV file to path/file name.
+-a --alpha           float         incidence angle
+-b --blaze           float degrees blaze angle
+-m --mode            int           mode
+-l --lmm             int           lines per mm
 
 This is a basic stand-alone program that is a useful regression
 testbed for the Grating class. It permits playing with grating
@@ -305,7 +309,7 @@ class Grating:  # Grating(object) if inherited
       sinalpha        = sin(radians(self.alpha))          # constant
       sinb            = m * (self.wave / self.d) + sinalpha    # spread out to watch.
       β               = arcsin(sinb)                      # beta
-      key             = """α={:5.2f}, m={:2d} lmm={:d}""".format(self.alpha,self.m,int(self.lmm))
+      key             = """α={:5.2f}, m={:2d} lmm={:5.2f}""".format(self.alpha,self.m,int(self.lmm))
       self.dispersion[key] = degrees(β)                   # save 'last' result
       np.seterr(invalid=None)       # reset for other parts of the code.
 
@@ -352,7 +356,7 @@ class Grating:  # Grating(object) if inherited
       external access, and retains the state between calls."""
       if(self._fig == None):
          self._fig   = plt.figure()                                  # init a figure and axis
-         self.ax     = _fig.add_subplot(111, projection='polar')      # overplot axis
+         self.ax     = self._fig.add_subplot(111, projection='polar')      # overplot axis
          self.ax.set_thetamin(90)                                     # display quads I and II
          self.ax.set_thetamax(-90)
       return self
@@ -381,18 +385,18 @@ class Grating:  # Grating(object) if inherited
                colors   = 1.0 - (theta/max(theta))           # self-normalize the data
                #for w in nans:
                #   colors[w[0]] = 0.0  # 
-               ax.set_rlabel_position(-22.5)                 # bend numbers out of way
+               self.ax.set_rlabel_position(-22.5)                 # bend numbers out of way
                if(len(nans) != 0):
                   firstbad = badlist[0]
                   theta    = theta[:firstbad]                # to leave out the NaNs
                   r        = r[:firstbad]
                   colors   = colors[:firstbad]               # don't use array of colors for bad
-               ignore = ax.scatter(theta, r, c=colors, s=area, cmap='Spectral', alpha=0.75, label=k)
+               ignore = self.ax.scatter(theta, r, c=colors, s=area, cmap='Spectral', alpha=0.75, label=k)
                line   = np.linspace(0,rad+.1,30)   # PDB-DEBUG
                ltheta = np.full_like(line,theta[0])
-               ignore = ax.plot(ltheta,line,color='black',linewidth=2)
+               ignore = self.ax.plot(ltheta,line,color='black',linewidth=2)
                txt = k
-               ignore = ax.text(ltheta[-1],line[-1]+.1,txt)
+               ignore = self.ax.text(ltheta[-1],line[-1]+.1,txt)
                rad    = rad + .2                 # boost radius for next set
             except Exception as e:
                datalen = data.shape[0]
@@ -450,17 +454,33 @@ if __name__ == "__main__":
 
    opts = optparse.OptionParser(usage="%prog"+__doc__)
 
+   opts.add_option("-a", "--alpha",    action="store", dest="alpha",
+                   default=15.0,
+                   help="<float>       incidence angle")
+
+   opts.add_option("-b", "--blaze",    action="store", dest="blaze",
+                   default=3.5,
+                   help="<float>       blaze angle")
+
+   opts.add_option("-m", "--mode",    action="append", dest="mode",
+                   default=[1],
+                   help="<ing>         mode of the dispersion angle")
+
+   opts.add_option("-l", "--lmm",    action="store", dest="lmm",
+                   default=300.0,
+                   help="<float>       mode of the dispersion angle")
+
    opts.add_option("-c", "--csv",    action="store", dest="csvflag",
                    default=None,
                    help="<str|None>    provide pathname for a csvfile")
 
    opts.add_option("-p", "--plot",    action="store_true", dest="plotflag",
                    default=False,
-                   help="<bool>    ask for a plot")
+                   help="<bool>        ask for a plot")
 
    opts.add_option("-r", "--report",    action="store_true", dest="reportflag",
                    default=False,
-                   help="<bool>    ask for a report")
+                   help="<bool>        ask for a report")
 
    opts.add_option("-v", "--verbose", action="store_true", dest="verboseflag",
                    default=False,
@@ -470,6 +490,25 @@ if __name__ == "__main__":
 
 
    specrange = np.arange(3300, 8000, 100)     # units: angstroms every 10nm
+   α         = float(options.alpha)
+   mode      = options.mode
+   lmm       = float(options.lmm)
+   blaze     = float(options.blaze)
+
+   g    = Grating(α, mode, lmm, 3.5, 25)
+
+   for m in mode:
+      g.setmode(int(m))
+      g.grating_quation(specrange)
+
+
+   if(options.reportflag):
+      g.report()                                        # make a report
+   if(options.plotflag):
+      g.plot()                                          # show a plot
+   if(options.csvflag is not None):
+      g.csv(options.csvflag)
+
 
    if(0):  # example of one grating three incidence angles
       g = Grating(45.0, 1, 300, 3.5, 25)
@@ -484,19 +523,5 @@ if __name__ == "__main__":
       if(options.plotflag):
          g.plot()                                          # show a plot
 
-   if(1):
-      α = -45.0
-      g = Grating(α, 1, 300, 3.5, 25)
-      g.grating_quation(specrange)
-      g.setlmm(600).grating_quation(specrange)
-      g.setlmm(1200).grating_quation(specrange)
-      g.setlmm(1800).grating_quation(specrange)
-      g.setlmm(2400).grating_quation(specrange)
-      if(options.reportflag):
-         g.report()                                        # make a report
-      if(options.plotflag):
-         g.plot()                                          # show a plot
-      if(options.csvflag is not None):
-         g.csv(options.csvflag)
       
 
