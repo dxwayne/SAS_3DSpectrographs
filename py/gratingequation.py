@@ -112,6 +112,10 @@ https://www.spectrogon.com/product-services/gratings/grating-design-tool/
 handy notes about Pandas
 https://pandas.pydata.org/Pandas_Cheat_Sheet.pdf
 
+The red   dashed line is the angle of incidence.
+The green dotted line is the normal.
+the blue  dotted line is the angle of diffraction.
+
 """
 
 __copyright__ = """Copyright 2020 Wayne Green.
@@ -395,6 +399,12 @@ class Grating:  # Grating(object) if inherited
                line   = np.linspace(0,rad+.1,30)   # PDB-DEBUG
                ltheta = np.full_like(line,theta[0])
                ignore = self.ax.plot(ltheta,line,color='black',linewidth=2)
+               alphaline = np.full_like(line,radians(self.alpha))
+               ignore = self.ax.plot(alphaline,line,color='red',linestyle='--',linewidth=2)
+               ignore = self.ax.text(alphaline[-1],line[-1]+0.15,u'α',color='red')
+               normal = np.full_like(line,0.0)
+               ignore = self.ax.plot(normal,line,color='green',linestyle='dotted',linewidth=2)
+               ignore = self.ax.text(normal[-1],line[-1]+0.15,"n",color='green')
                txt = k
                ignore = self.ax.text(ltheta[-1],line[-1]+.1,txt)
                rad    = rad + .2                 # boost radius for next set
