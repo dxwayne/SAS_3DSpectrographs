@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>NASpectrography</class>
+ <widget class="QMainWindow" name="NASpectrography">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>640</width>
+    <height>480</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QMainWindow {background: yellow}</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <property name="styleSheet">
+    <string notr="true">QWidget#centralwidget {background: darkred}</string>
+   </property>
+   <widget class="QPushButton" name="OTADialog">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>20</y>
+      <width>91</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton {background-color: darkred; color: white}</string>
+    </property>
+    <property name="text">
+     <string>OTA</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="SpectrographDialog">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>50</y>
+      <width>91</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton {background-color: darkred; color: white}</string>
+    </property>
+    <property name="text">
+     <string>Spectrograph</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="PhotometryDialog">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>80</y>
+      <width>91</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton {background-color: darkred; color: white}</string>
+    </property>
+    <property name="text">
+     <string>Photometry</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="WeatherDialog">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>110</y>
+      <width>91</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton {background-color: darkred; color: white}</string>
+    </property>
+    <property name="text">
+     <string>Weather</string>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>640</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QMenuBar#menubar { background-color: black; color: white}</string>
+   </property>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>File</string>
+    </property>
+    <addaction name="menufileOpen"/>
+   </widget>
+   <widget class="QMenu" name="menuHelp">
+    <property name="title">
+     <string>Dialogs</string>
+    </property>
+    <addaction name="menuDilogs"/>
+    <addaction name="actionSpectrograph_Dialog"/>
+    <addaction name="actionPhotometry_Dialog"/>
+    <addaction name="actionWeather_Dialog"/>
+   </widget>
+   <addaction name="menuFile"/>
+   <addaction name="menuHelp"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar">
+   <property name="styleSheet">
+    <string notr="true">QStatusBar#statusbar {background-color: black}</string>
+   </property>
+  </widget>
+  <action name="menufileOpen">
+   <property name="text">
+    <string>Open</string>
+   </property>
+  </action>
+  <action name="menuDilogs">
+   <property name="text">
+    <string>OTA Dialog</string>
+   </property>
+  </action>
+  <action name="actionSpectrograph_Dialog">
+   <property name="text">
+    <string>Spectrograph Dialog</string>
+   </property>
+  </action>
+  <action name="actionPhotometry_Dialog">
+   <property name="text">
+    <string>Photometry Dialog</string>
+   </property>
+  </action>
+  <action name="actionWeather_Dialog">
+   <property name="text">
+    <string>Weather Dialog</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
