@@ -1,0 +1,80 @@
+SAS_NA1_3D_Spectrograph
+=======================
+
+Introducing the New GitHUB repo -- SAS_NA1_3D_Spectrograph
+
+     https://github.com/dxwayne/SAS_NA1_3D_Spectrograph
+
+In late May 2021 we need to deliver a paper and a working
+spectrograph.  The paper's completion may preceed the final repo. At
+the time of SAS we will change the "SAS_NA1_3D_Spectrograph" from
+private to publicly accessible. Only we can change it. Any and Every
+entity can get a copy.
+
+To these ends the SAS_3D_Spectrograph repo will still hold our
+experiments. The new SAS_NA1_3D_Spectrograph will hold the initial
+release (taking place this week) and any changes forward from that
+point.
+
+So far the general hardware elements include:
+
+ Progress      Description
+    5      Housing with 30mm height for the optical axis
+    8      Grating Rotator and IR sensor for position
+    9      OVIO slit holder
+    6      Colliminating Lens/CAM-focuser
+    3      The Camera Lens
+    6      Guide Camera/optics and mirror
+    0      Mount to telescope
+    0      Rotator for Parallatic Angle
+    2      Calibration Lamps
+
+Publication:
+    0      The paper!
+    0      Video Presentation(s)
+
+           
+Cad Packages/Files:
+     Fusion/360  - recommended
+     Solidworks  - recommended
+     (others)    - tolerated
+  Mandatory: STL files.
+  Mandatory: Matched drawing file for package
+  Mandatory: Matched SLDPART,etc file per package
+  Mandatory: PDF with lots of dimensions.
+  Mandatory: A ".rst" file for the Sphinx Doc (stored in docs)
+
+
+Computing Platforms:
+    Raspberry Pi
+    ODroid
+    Arduino:
+        Nano BLE Sense 3V
+        Xiao
+        TBD
+
+
+The layout of the repo will be:
+
+Top level
+  .git -- hiden revision history
+  doc  -- RESERVED for Sphinx Documentation
+      RST files, per section of the "manual"
+      Photos/images/sketches/PDFs
+     
+
+  CAD (a subdir for each main functional element)
+      Functional Element
+         CAD files, mixed per element.
+
+  Code:
+       The code files will be organized along their own
+       substructure. As libraries will exist, their format will not
+       necessarily follow the mechanical form.  Language choices are
+       open, preferably simplified C/C++ (Arduino); Python 3.8+, bash
+       shell (as needed per platform)
+
+  Design (documents):
+       Spreadsheets as needed.
+       Hand sketches are acceptable
+
